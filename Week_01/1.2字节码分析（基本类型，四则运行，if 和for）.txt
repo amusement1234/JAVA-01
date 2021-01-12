@@ -1,0 +1,105 @@
+源码1：原始代码
+public class app {
+    public static void main(String[ ] args){
+        int a=1;
+        int b=10;
+        int c=100;
+        int d=1000;
+        int e=10000;
+        int f=100000;
+    }
+}
+
+
+查看字节码：
+E:\JavaClass\JavaCode\out\production\JavaCode>javap -c app.class
+Compiled from "app.java"
+public class app {
+  public app();
+    Code:
+       0: aload_0
+       1: invokespecial #1                  // Method java/lang/Object."<init>":()V
+       4: return
+
+  public static void main(java.lang.String[]);
+    Code:
+       0: iconst_1	//1(int)值入栈。
+       1: istore_1	//将栈顶int类型值保存到局部变量1中。
+       2: bipush        10 //带符号扩展成int值入栈。
+       4: istore_2	
+       5: bipush        100
+       7: istore_3
+       8: sipush        1000 //带符号扩展成int值入栈。
+      11: istore        4  //将栈顶int类型值保存到局部变量0中。 
+      13: sipush        10000
+      16: istore        5
+      18: ldc           #2 //常量池中的常量值（int, float, string reference, object reference）入栈。                 // int 100000
+      20: istore        6
+      22: return
+}
+
+备注：当int取值-1~5采用iconst指令，取值-128~127采用bipush指令，取值-32768~32767采用sipush指令，取值-2147483648~2147483647采用 ldc 指令。
+
+
+
+
+源码1：原始代码
+public class app {
+    public static void main(String[ ] args){
+        int a=1;
+        int b=10;
+        int c=a+b;
+        int d=a/b;
+        for (int i = 0; i < b; i++) {
+
+        }
+
+        if(a>b){
+            
+        }
+    }
+
+}
+
+
+查看字节码：
+E:\JavaClass\JavaCode\out\production\JavaCode>javap -c app.class
+Compiled from "app.java"
+public class app {
+  public app();
+    Code:
+       0: aload_0
+       1: invokespecial #1                  // Method java/lang/Object."<init>":()V
+       4: return
+
+  public static void main(java.lang.String[]);
+    Code:
+       0: iconst_1	//1(int)值入栈。
+       1: istore_1	//将栈顶int类型值保存到局部变量1中。
+       2: bipush        10
+       4: istore_2
+       5: iload_1	//从局部变量1中装载int类型值入栈。
+       6: iload_2
+       7: iadd		//将栈顶两int类型数相加，结果入栈。
+       8: istore_3	
+       9: iload_1
+      10: iload_2
+      11: idiv		//将栈顶两int类型数相除，结果入栈。
+      12: istore        4
+      14: iconst_0
+      15: istore        5
+      17: iload         5
+      19: iload_2
+      20: if_icmpge     29 //若栈顶两int类型值前大于等于后则跳转。
+      23: iinc          5, 1 //将整数值constbyte加到indexbyte指定的int类型的局部变量中。
+      26: goto          17 //无条件跳转到指定位置。
+      29: iload_1
+      30: iload_2
+      31: if_icmple     34 //若栈顶两int类型值前小于等于后则跳转。  if(a>b)
+      34: return
+}
+
+
+
+
+

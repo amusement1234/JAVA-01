@@ -1,0 +1,149 @@
+源码1：原始代码
+public class app {
+    public static void main(String[ ] args){
+
+    }
+}
+
+查看字节码：
+E:\JavaClass\JavaCode\out\production\JavaCode>javap -c app.class
+Compiled from "app.java"
+public class app {
+  public app();		//调用构造函数
+    Code:
+       0: aload_0	//从局部变量0中装载引用类型值入栈。
+       1: invokespecial #1	//编译时方法绑定调用方法 // Method java/lang/Object."<init>":()V
+       4: return	//void函数返回。
+
+  public static void main(java.lang.String[]);
+    Code:
+       0: return	//void函数返回。
+}
+
+
+
+
+
+源码2：添加重载方法
+public class app {
+    public app(){
+        int a=1;
+    }
+    
+    public static void main(String[ ] args){
+        int b=2;
+    }
+
+}
+
+查看字节码：
+E:\JavaClass\JavaCode\out\production\JavaCode>javap -c app.class
+Compiled from "app.java"
+public class app {
+  public app();
+    Code:
+       0: aload_0	//从局部变量0中装载引用类型值入栈。
+       1: invokespecial #1                  // Method java/lang/Object."<init>":()V
+       4: iconst_1	//1(int)值入栈。
+       5: istore_1	//将栈顶int类型值保存到局部变量1中。
+       6: return
+
+  public static void main(java.lang.String[]);
+    Code:
+       0: iconst_2	//2(int)值入栈。
+       1: istore_1	//将栈顶int类型值保存到局部变量1中。
+       2: return
+}
+
+
+
+源码3：添加方法调用（因为没有参数接收，初始化之后就pop了）
+public class app {
+    public static void main(String[ ] args){
+        new app();
+    }
+}
+
+查看字节码：
+E:\JavaClass\JavaCode\out\production\JavaCode>javap -c app.class
+Compiled from "app.java"
+public class app {
+  public app();
+    Code:
+       0: aload_0
+       1: invokespecial #1                  // Method java/lang/Object."<init>":()V
+       4: return
+
+  public static void main(java.lang.String[]);
+    Code:
+       0: new           #2	//创建新的对象实例。 // class app
+       3: dup	//复制栈顶一个字长的数据，将复制后的数据压栈。
+       4: invokespecial #3	//编译时方法绑定调用方法。 // Method "<init>":()V
+       7: pop	//从栈顶弹出一个字长的数据。
+       8: return
+}
+
+
+
+
+源码4：添加方法调用
+public class app {
+    public static void main(String[ ] args){
+        app obj=new app();
+    }
+}
+
+查看字节码：
+E:\JavaClass\JavaCode\out\production\JavaCode>javap -c app.class
+Compiled from "app.java"
+public class app {
+  public app();
+    Code:
+       0: aload_0
+       1: invokespecial #1                  // Method java/lang/Object."<init>":()V
+       4: return
+
+  public static void main(java.lang.String[]);
+    Code:
+       0: new           #2                  // class app
+       3: dup
+       4: invokespecial #3                  // Method "<init>":()V
+       7: astore_1	//将栈顶引用类型值保存到局部变量1中。
+       8: return
+}
+
+
+
+
+源码4：
+public class app {
+    public static void main(String[ ] args){
+        app obj=new app();
+        System.out.println("hello world");
+    }
+}
+
+查看字节码：
+E:\JavaClass\JavaCode\out\production\JavaCode>javap -c app.class
+Compiled from "app.java"
+public class app {
+  public app();
+    Code:
+       0: aload_0	//从局部变量0中装载引用类型值入栈。
+       1: invokespecial #1	//编译时方法绑定调用方法。 // Method java/lang/Object."<init>":()V
+       4: return	//void函数返回。
+
+  public static void main(java.lang.String[]);
+    Code:
+       0: new           #2	//创建新的对象实例。 // class app
+       3: dup	//复制栈顶一个字长的数据，将复制后的数据压栈。 app obj
+       4: invokespecial #3	//编译时方法绑定调用方法 // Method "<init>":()V
+       7: astore_1	//将栈顶引用类型值保存到局部变量1中。app obj
+       8: getstatic     #4	//获取静态字段的值。 // Field java/lang/System.out:Ljava/io/PrintStream;
+      11: ldc           #5	//常量池中的常量值入栈。 // String hello world
+      13: invokevirtual #6	//运行时方法绑定调用方法。 // Method java/io/PrintStream.println:(Ljava/lang/String;)V
+      16: return	//void函数返回。
+}
+
+
+
