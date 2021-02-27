@@ -1,0 +1,61 @@
+2.（必做）基于电商交易场景（用户、商品、订单），设计一套简单的表结构，提交 DDL 的 SQL 文件到 Github（后面 2 周的作业依然要是用到这个表结构）。
+
+create database myshop;
+
+use myshop;
+
+-- 用户表
+create table user
+(
+    user_id int auto_increment primary key comment '用户id',
+    user_name varchar(255) null comment '用户名',
+    user_pwd varchar(255) null comment '密码',
+
+    is_enable bit not null comment '是否启用',
+    is_delete bit not null comment '是否已删除',
+    create_time datetime not null comment '创建时间',
+    update_time datetime null comment '修改时间'
+);
+
+-- 商品表
+create table product(
+    product_id int auto_increment primary key ,
+    product_name nvarchar(100) not null,
+    product_desc nvarchar(1000) null,
+    price decimal(18,2) not null,
+    brand_name nvarchar(20) comment '品牌名称',
+    category_name nvarchar(20) comment '类目名称',
+
+    is_enable bit not null comment '是否启用',
+    is_delete bit not null comment '是否已删除',
+    create_time datetime not null comment '创建时间',
+    update_time datetime null comment '修改时间'
+);
+
+-- 订单表
+create table `order`(
+    order_id int auto_increment primary key comment '订单id',
+    order_number varchar(20) not null comment '订单编号',
+    order_status int not null comment '订单状态',
+    order_total_amount decimal(18,2) not null comment '订单总金额(实收)',
+    order_total_qty int comment '订单总数',
+    order_fee int comment '运费',
+    product_total_amount decimal(18,2) not null comment '商品总金额',
+
+    is_delete bit not null comment '是否已删除',
+    create_time datetime not null comment '创建时间',
+    update_time datetime null comment '修改时间'
+);
+
+-- 订单明细表
+create table order_item(
+    order_item_id int auto_increment primary key comment '订单明细id',
+    order_item_qty int comment '数量',
+    product_name nvarchar(100) comment '产品名称(冗余字段)',
+    product_id int comment '商品id',
+    order_id int comment '订单id',
+
+    is_delete bit not null comment '是否已删除',
+    create_time datetime not null comment '创建时间',
+    update_time datetime null comment '修改时间'
+);
