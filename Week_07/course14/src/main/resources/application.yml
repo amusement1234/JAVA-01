@@ -1,0 +1,39 @@
+sharding:
+  jdbc:
+    datasource:
+
+      names: ds-master-0,ds-slave-0
+      ds-master-0:
+        type: com.alibaba.druid.pool.DruidDataSource
+        driverClassName: com.mysql.jdbc.Driver
+        url: jdbc:mysql://localhost:3339/test?useUnicode=true&characterEncoding=utf8&tinyInt1isBit=false&useSSL=false&serverTimezone=GMT
+        username: root
+        password: 123456
+      ds-slave-0:
+        type: com.alibaba.druid.pool.DruidDataSource
+        driverClassName: com.mysql.jdbc.Driver
+        url: jdbc:mysql://localhost:3340/test?useUnicode=true&characterEncoding=utf8&tinyInt1isBit=false&useSSL=false&serverTimezone=GMT
+        username: root
+        password: 123456
+    config:
+      sharding:
+        default-database-strategy:
+          inline:
+            sharding-column: id
+            algorithm-expression: ds_$->{id%2}
+        tables:
+          user:
+            actual-data-nodes: ds_$->{0..1}.user_$->{0..3}
+            table-strategy:
+              inline:
+                sharding-column: id
+                algorithm-expression: user_$->{id % 5}
+            key-generator-column-name: id
+        master-slave-rules.ds_0:
+          master-data-source-name: ds-master-0
+          slave-data-source-names: ds-slave-0
+spring:
+  main:
+    allow-bean-definition-overriding: true
+
+
