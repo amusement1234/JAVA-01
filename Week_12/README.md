@@ -280,3 +280,6 @@ e069f0e61d4799a5f0571b71b1f59196dfa156c9 127.0.0.1:26379 master - 0 162098826642
 
 打开http://127.0.0.1:8161/admin，用户名密码：admin admin 
 
+
+Queue：Sender、Receiver。
+Topic：Publisher、Subscriber。
